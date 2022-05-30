@@ -1,0 +1,86 @@
+version: '3.7'
+
+services:
+  mysql:
+    build:
+      context: ./mysql/
+      dockerfile: 56.dockerfile
+    image: ${PROFILE}/mysql:5.7
+    container_name: mysql-server
+    tty: true
+    volumes:
+      - storage_mysql:/var/lib/mysql
+    environment:
+      TZ: "America/Sao_Paulo"
+      MYSQL_DATABASE: homestead
+      MYSQL_USER: homestead
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: root-secret
+    ports:
+      - ${MYSQL_EXT_PORT:-3306}:3306
+    networks:
+      - netDefault
+
+  mariadb:
+    build:
+      context: ./mariadb/
+      dockerfile: latest.dockerfile
+    image: ${PROFILE}/mariadb:latest
+    container_name: mariadb-server
+    tty: true
+    volumes:
+      - storage_maria:/var/lib/mysql
+    environment:
+      TZ: "America/Sao_Paulo"
+      MYSQL_DATABASE: homestead
+      MYSQL_USER: homestead
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: root-secret
+    ports:
+      - ${MARIADB_EXT_PORT:-3307}:3307
+    networks:
+      - netDefault
+
+  mongo:
+    build:
+      context: ./mongo/
+      dockerfile: latest.dockerfile
+    image: ${PROFILE}/mongo:latest
+    container_name: mongodb-server
+    tty: true
+    environment:
+      TZ: "America/Sao_Paulo"
+      SERVICE_NAME: mongodb-server
+      SERVICE_TAGS: development
+    volumes:
+      - storage_mongo:/data/db
+    ports:
+      - ${MONGO_EXT_PORT:-27017}:27017
+    networks:
+      - netDefault
+
+  redis:
+    build:
+      context: ./redis/
+      dockerfile: latest.dockerfile
+    image: ${PROFILE}/redis:latest
+    container_name: redis-server
+    ports:
+      - ${REDIS_EXT_PORT:-6379}:6379
+    volumes:
+      - storage_redis:/data
+    networks:
+      - netDefault
+
+volumes:
+  storage_mysql:
+    driver: local
+  storage_maria:
+    driver: local
+  storage_mongo:
+    driver: local
+  storage_redis:
+    driver: local
+networks:
+  netDefault:
+    driver: "bridge"
