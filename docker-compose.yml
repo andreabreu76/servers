@@ -1,24 +1,24 @@
 version: '3.7'
 
 services:
-  mysql:
-    build:
-      context: ./mysql/
-      dockerfile: 56.dockerfile
-    image: ${PROFILE}/mysql:5.7
-    container_name: mysql-server2
-    tty: true
-    volumes:
-      - storage_mysql:/var/lib/mysql
-    environment:
-      TZ: "America/Sao_Paulo"
-      MYSQL_USER: homestead
-      MYSQL_PASSWORD: secret
-      MYSQL_ROOT_PASSWORD: root-secret
-    ports:
-      - 3307:3307
-    networks:
-      - netDefault
+  # mysql:
+  #   build:
+  #     context: ./mysql/
+  #     dockerfile: 56.dockerfile
+  #   image: ${PROFILE}/mysql:5.7
+  #   container_name: mysql-server2
+  #   tty: true
+  #   volumes:
+  #     - storage_mysql:/var/lib/mysql
+  #   environment:
+  #     TZ: "America/Sao_Paulo"
+  #     MYSQL_USER: homestead
+  #     MYSQL_PASSWORD: secret
+  #     MYSQL_ROOT_PASSWORD: root-secret
+  #   ports:
+  #     - 3307:3307
+  #   networks:
+  #     - netDefault
 
   mariadb:
     build:
@@ -71,8 +71,8 @@ services:
       - netDefault
 
 volumes:
-  storage_mysql:
-    driver: local
+  # storage_mysql:
+  #   driver: local
   storage_maria:
     driver: local
   storage_mongo:
